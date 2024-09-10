@@ -4,15 +4,18 @@ const pagesInput = document.querySelector("input[name='pages']");
 const bookShelf = document.querySelector(".book-shelf");
 
 const LIBRARY = [];
+const generatedIdList = [];
+const IDLENGTH = 10;
 
 // INITIALIZE
 createFormElement();
 
 // book.. XD
-function Book(title, author, numberOfPages) {
+function Book(title, author, numberOfPages, id) {
   this.title = title;
   this.author = author;
   this.numberOfPages = numberOfPages;
+  this.id = id;
 }
 
 // Create the form element instead of hand-writing at the html file, to be able to keep the form in the same container as the books, and not be overwritten/removed when we clear the bookShelf element by adding a new book.
@@ -62,7 +65,7 @@ function createFormElement() {
 }
 
 // Creates the book element to be shown on the screen
-function createBookElement(title, author, numberOfPages) {
+function createBookElement(book) {
   const li = document.createElement("li");
   li.classList = "book-wrapper";
   const article = document.createElement("article");
@@ -76,10 +79,13 @@ function createBookElement(title, author, numberOfPages) {
   p.classList = "author";
   const span = document.createElement("p");
   span.classList = "number-of-pages";
+  const deleteButton = document.createElement("button");
+  deleteButton.classList = "delete-book";
 
-  h2.innerText = title;
-  p.innerText = author;
-  span.innerText = numberOfPages;
+  h2.innerText = book.title;
+  p.innerText = book.author;
+  span.innerText = book.numberOfPages;
+  deleteButton.innerText = "Delete";
 
   li.appendChild(article);
   article.appendChild(header);
@@ -87,6 +93,12 @@ function createBookElement(title, author, numberOfPages) {
   article.appendChild(section);
   section.appendChild(p);
   section.appendChild(span);
+  section.appendChild(deleteButton);
+
+  // EVENT LISTENERS
+  deleteButton.addEventListener("click", () => {
+    deleteBook(book.id, prompt("are you sure you want to delete ( y/n )"));
+  });
 
   return li;
 }
@@ -95,14 +107,12 @@ function createBookElement(title, author, numberOfPages) {
 function displayLibrary() {
   clearBookShelfElement();
   LIBRARY.forEach((book) => {
-    const bookElement = createBookElement(
-      book.title,
-      book.author,
-      book.numberOfPages
-    );
+    const bookElement = createBookElement(book);
 
     bookShelf.appendChild(bookElement);
   });
+
+  console.log(LIBRARY);
 }
 
 function clearBookShelfElement() {
@@ -121,5 +131,31 @@ function createBook(title, author, numberOfPages) {
     return;
   }
 
-  LIBRARY.push(new Book(title, author, numberOfPages));
+  LIBRARY.push(new Book(title, author, numberOfPages, genereteId(IDLENGTH)));
+}
+
+function deleteBook(targetId, bool) {
+  if (bool == "y" || bool == "Y") {
+    // filter method don't work because the LIBRARY is immutable and we have to reassign its return value to the LIBRARY.
+    LIBRARY.forEach((book) => {
+      if (book.id === targetId) LIBRARY.splice(LIBRARY.indexOf(book), 1);
+    });
+
+    displayLibrary();
+  }
+}
+
+// TODO: prevent from generating two identical ID, although the're so much combination the characters can do that makes it less possible
+function genereteId(lenght) {
+  const characters =
+    "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let generatedId = "";
+  for (let i = 0; i < lenght; i++) {
+    const rndNum = Math.ceil(Math.random() * characters.length);
+    generatedId += characters[rndNum];
+  }
+  // pushes the genereted ID to the generated ID list for future improvement
+  generatedIdList.push(generatedId);
+
+  return generatedId;
 }
