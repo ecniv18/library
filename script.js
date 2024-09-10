@@ -102,7 +102,7 @@ function createBookElement(book) {
   numberOfPages.innerText = `${book.numberOfPages} pages`;
   deleteButton.innerText = "Delete";
   readButton.innerText = book.read ? "unread" : "read";
-  readComment.innerText = book.read ? "have not read yet" : "already read";
+  readComment.innerText = book.read ? "already read." : "have not read yet.";
 
   li.appendChild(article);
   article.appendChild(header);
