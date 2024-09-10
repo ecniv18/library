@@ -2,4 +2,4 @@
 
 - An app for organizing books
 
-made for the <a href='https://theodinproject.org'>The Odin Project</a>.
+made for the <a href='https://www.theodinproject.com'>The Odin Project</a>.
