@@ -16,6 +16,10 @@ function Book(title, author, numberOfPages, id) {
   this.author = author;
   this.numberOfPages = numberOfPages;
   this.id = id;
+  this.read = false;
+  this.toggleRead = () => {
+    this.read = !this.read;
+  };
 }
 
 // Create the form element instead of hand-writing at the html file, to be able to keep the form in the same container as the books, and not be overwritten/removed when we clear the bookShelf element by adding a new book.
@@ -68,6 +72,7 @@ function createFormElement() {
 function createBookElement(book) {
   const li = document.createElement("li");
   li.classList = "book-wrapper";
+  li.id = book.id;
   const article = document.createElement("article");
   article.classList = "book";
   const header = document.createElement("header");
@@ -81,11 +86,14 @@ function createBookElement(book) {
   span.classList = "number-of-pages";
   const deleteButton = document.createElement("button");
   deleteButton.classList = "delete-book";
+  const readButton = document.createElement("button");
+  readButton.classList = "read-button";
 
   h2.innerText = book.title;
   p.innerText = book.author;
   span.innerText = book.numberOfPages;
   deleteButton.innerText = "Delete";
+  readButton.innerText = book.read ? "unread" : "read";
 
   li.appendChild(article);
   article.appendChild(header);
@@ -94,10 +102,16 @@ function createBookElement(book) {
   section.appendChild(p);
   section.appendChild(span);
   section.appendChild(deleteButton);
+  section.appendChild(readButton);
 
   // EVENT LISTENERS
   deleteButton.addEventListener("click", () => {
     deleteBook(book.id, prompt("are you sure you want to delete ( y/n )"));
+  });
+
+  readButton.addEventListener("click", () => {
+    book.toggleRead();
+    displayLibrary();
   });
 
   return li;
