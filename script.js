@@ -82,27 +82,39 @@ function createBookElement(book) {
   section.classList = "book-info-section";
   const p = document.createElement("p");
   p.classList = "author";
-  const span = document.createElement("p");
-  span.classList = "number-of-pages";
+  const numberOfPages = document.createElement("span");
+  numberOfPages.classList = "number-of-pages";
   const deleteButton = document.createElement("button");
-  deleteButton.classList = "delete-book";
+  deleteButton.classList = "delete-button";
   const readButton = document.createElement("button");
   readButton.classList = "read-button";
+  const readComment = document.createElement("span");
+  readComment.classList = "read-comment";
+
+  const buttonContainerDiv = document.createElement("div");
+  buttonContainerDiv.classList = "button-container";
+
+  const readCommentAndButtonDiv = document.createElement("div");
+  readCommentAndButtonDiv.classList = "read-comment-container";
 
   h2.innerText = book.title;
-  p.innerText = book.author;
-  span.innerText = book.numberOfPages;
+  p.innerText = `Written by: ${book.author}`;
+  numberOfPages.innerText = `${book.numberOfPages} pages`;
   deleteButton.innerText = "Delete";
   readButton.innerText = book.read ? "unread" : "read";
+  readComment.innerText = book.read ? "have not read yet" : "already read";
 
   li.appendChild(article);
   article.appendChild(header);
   header.appendChild(h2);
   article.appendChild(section);
   section.appendChild(p);
-  section.appendChild(span);
-  section.appendChild(deleteButton);
-  section.appendChild(readButton);
+  section.appendChild(numberOfPages);
+  readCommentAndButtonDiv.appendChild(readButton);
+  readCommentAndButtonDiv.appendChild(readComment);
+  buttonContainerDiv.appendChild(readCommentAndButtonDiv);
+  buttonContainerDiv.appendChild(deleteButton);
+  section.appendChild(buttonContainerDiv);
 
   // EVENT LISTENERS
   deleteButton.addEventListener("click", () => {
