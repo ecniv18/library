@@ -33,8 +33,11 @@ function createFormElement() {
   titleInput.id = "title";
   authorInput.id = "author";
   pagesInput.id = "pages";
-  titleInput.name = "title";
-  authorInput.name = "author";
+
+  titleInput.placeholder = "ex: The Hobbit";
+  authorInput.placeholder = "ex: J.R.R Tolkien";
+  pagesInput.placeholder = "ex: (# of pages): 300";
+
   const button = document.createElement("button");
   button.classList = "add-button";
   button.innerText = "Add";
@@ -108,5 +111,15 @@ function clearBookShelfElement() {
 }
 
 function createBook(title, author, numberOfPages) {
+  // ADD BASIC INPUT VERIFICATION
+  if (title.length === 0 || author.length === 0 || numberOfPages.lenght === 0) {
+    alert("All inputs are required");
+    return;
+  }
+  if (Number(numberOfPages) === 0) {
+    alert("Number of Pages require a Number input");
+    return;
+  }
+
   LIBRARY.push(new Book(title, author, numberOfPages));
 }
